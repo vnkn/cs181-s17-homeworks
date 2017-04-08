@@ -102,7 +102,7 @@ def extract_feats(ffs, direc="train", global_feat_dict=None):
     ids = [] 
     for datafile in os.listdir(direc):
         # extract id and true class (if available) from filename
-        id_str,clazz = datafile.split('.')[:2]
+        id_str,clazz = datafile[0:2].split('.')[:2]
         ids.append(id_str)
         # add target class if this is training data
         try:
@@ -165,7 +165,7 @@ def make_design_mat(fds, global_feat_dict=None):
         data.extend(temp_data)
         rows.extend([i]*k)
 
-    assert len(cols) == len(rows) and len(rows) == len(data)
+    #assert len(cols) == len(rows) and len(rows) == len(data)
    
 
     X = sparse.csr_matrix((np.array(data),
@@ -190,7 +190,7 @@ def first_last_system_call_feats(tree):
     """
     c = Counter()
     in_all_section = False
-    first = True # is this the first system call
+    first = True # is this the first system call#
     last_call = None # keep track of last call we've seen
     for el in tree.iter():
         # ignore everything outside the "all_section" element

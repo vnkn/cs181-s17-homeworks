@@ -1,3 +1,4 @@
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as c
@@ -12,31 +13,55 @@ class LogisticRegression:
     def __init__(self, eta, lambda_parameter):
         self.eta = eta
         self.lambda_parameter = lambda_parameter
-    
+
     # Just to show how to make 'private' methods
     def __dummyPrivateMethod(self, input):
         return None
 
+    
+    def __gradientloss(self):
+        softmax = self.X.dot(self.W.T) - logsumexp(self.X.dot(self.W.T), axis = 1)[:, np.newaxis]
+        print self.W.shape
+        print self.X.shape
+        print softmax.shape
+        print self.C.shape
+        print self.C.T.dot(self.X).shape
+        gradient = ((np.exp(softmax) - self.C).T).dot(self.X)
+        error = 2 * self.lambda_parameter * self.W
+        print len(gradient)
+        print len(gradient[0])
+        print len(error)
+        print self.W.shape
+        print self.X.shape
+        return gradient +  error
+
+    def __logisticiteration(self):
+        self.W -= (self.__gradientloss() * self.eta)
+        return self.__gradientloss() 
+    
+
     # TODO: Implement this method!
     def fit(self, X, C):
+        X = np.append(X,np.ones((X.shape[0], 1)), axis=1)
         self.X = X
         self.C = C
-        return
-
+        self.features = X.shape[1]
+        self.W = np.zeros((59,self.features))
+        ys = []
+        for k in C:
+            y = np.zeros(3)
+            y = 1
+            ys.append(y)
+        self.y = np.array(ys)
+        norm = 0
+        for k in range(1000):
+            gradient = self.__logisticiteration()
+            norm += np.linalg.norm(gradient)
+        print norm
     # TODO: Implement this method!
-    def predict(self, X_to_predict):
-        # The code in this method should be removed and replaced! We included it just so that the distribution code
-        # is runnable and produces a (currently meaningless) visualization.
-        Y = []
-        for x in X_to_predict:
-            val = 0
-            if x[1] > 4:
-                val += 1
-            if x[1] > 6:
-                val += 1
-            Y.append(val)
-        return np.array(Y)
-
+    def predict(self, X_to_predict): 
+        maximized = np.argmax(X_to_predict.dot(self.W.T), axis=1)
+        return maximized
     def visualize(self, output_file, width=2, show_charts=False):
         X = self.X
 

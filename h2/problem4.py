@@ -11,8 +11,8 @@ from GaussianGenerativeModel import GaussianGenerativeModel
 # adjust these as you try to find the best fit for each classifier.
 
 # Logistic Regression parameters
-eta = .1
-lambda_parameter = .1
+eta = .3
+lambda_parameter = .3
 
 
 # Do not change anything below this line!!
@@ -25,7 +25,7 @@ Y = (df['fruit'] - 1).values
 
 nb1 = GaussianGenerativeModel(isSharedCovariance=False)
 nb1.fit(X,Y)
-nb1.visualize("generative_result_separate_covariances.png")
+nnb1.visualize("generative_result_separate_covariances_10.png")
 
 nb2 = GaussianGenerativeModel(isSharedCovariance=True)
 nb2.fit(X,Y)
@@ -33,7 +33,7 @@ nb2.visualize("generative_result_shared_covariances.png")
 
 lr = LogisticRegression(eta=eta, lambda_parameter=lambda_parameter)
 lr.fit(X,Y)
-lr.visualize('logistic_regression_result.png')
+lr.visualize('logistic_regression_result_10.png')
 
 
 
